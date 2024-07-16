@@ -1,0 +1,32 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+# Step 1: Define the real function
+def my_function(x1, x2, x3, x4, x5):
+    # Example function, replace with your actual function
+    return x1**2 + x2**2 + np.sin(x3) + np.exp(x4) - x5
+
+# Step 2: Fix three variables
+fixed_x3 = 1  # Example values, replace with your actual fixed values
+fixed_x4 = 2
+fixed_x5 = 3
+
+# Step 3: Create a meshgrid for the two variables to plot
+x1_values = np.linspace(-5, 5, 100)  # Adjust range and number of points as needed
+x2_values = np.linspace(-5, 5, 100)  # Adjust range and number of points as needed
+X1, X2 = np.meshgrid(x1_values, x2_values)
+
+# Step 4: Compute function values over the grid
+Z = my_function(X1, X2, fixed_x3, fixed_x4, fixed_x5)
+
+# Step 5: Plot the computed function values
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.plot_surface(X1, X2, Z, cmap='viridis')
+
+ax.set_xlabel('X1 Label')
+ax.set_ylabel('X2 Label')
+ax.set_zlabel('Function Value')
+
+plt.show()
