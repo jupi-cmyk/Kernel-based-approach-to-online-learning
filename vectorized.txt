@@ -2,31 +2,39 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
-# Step 1: Define the real function
-def my_function(x1, x2, x3, x4, x5):
-    # Example function, replace with your actual function
-    return x1**2 + x2**2 + np.sin(x3) + np.exp(x4) - x5
+# Define the function that takes a (5,1) numpy array
+def my_function(x):
+    # Assuming x is a (5,1) np.array
+    # Example function: f(x) = x1^2 + x2^2 + x3 + x4 + x5
+    return x[0]**2 + x[1]**2 + x[2] + x[3] + x[4]
 
-# Step 2: Fix three variables
-fixed_x3 = 1  # Example values, replace with your actual fixed values
-fixed_x4 = 2
-fixed_x5 = 3
+# Fix three variables
+x3 = 1
+x4 = 2
+x5 = 3
 
-# Step 3: Create a meshgrid for the two variables to plot
-x1_values = np.linspace(-5, 5, 100)  # Adjust range and number of points as needed
-x2_values = np.linspace(-5, 5, 100)  # Adjust range and number of points as needed
-X1, X2 = np.meshgrid(x1_values, x2_values)
+# Create x1 and x2 as (100, 1) np.array
+x1 = np.linspace(-5, 5, 100).reshape(100, 1)
+x2 = np.linspace(-5, 5, 100).reshape(100, 1)
 
-# Step 4: Compute function values over the grid
-Z = my_function(X1, X2, fixed_x3, fixed_x4, fixed_x5)
+# Convert to one-dimensional arrays for meshgrid
+x1 = x1.ravel()
+x2 = x2.ravel()
 
-# Step 5: Plot the computed function values
+# Create a meshgrid
+X1, X2 = np.meshgrid(x1, x2)
+
+# Evaluate the function over the meshgrid
+Z = np.array([my_function(np.array([x1i, x2i, x3, x4, x5]).reshape(5, 1)) for x1i, x2i in zip(np.ravel(X1), np.ravel(X2))])
+Z = Z.reshape(X1.shape)
+
+# Plot the function
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 ax.plot_surface(X1, X2, Z, cmap='viridis')
 
-ax.set_xlabel('X1 Label')
-ax.set_ylabel('X2 Label')
-ax.set_zlabel('Function Value')
+ax.set_xlabel('X1')
+ax.set_ylabel('X2')
+ax.set_zlabel('f(X)')
 
 plt.show()
